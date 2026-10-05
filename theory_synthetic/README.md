@@ -108,7 +108,7 @@ and
 
 `paper_outputs/exp5_landscape.csv` contains every feasible configuration in the representative instance.
 
-`paper_outputs/exp5_margin_curve.csv` contains the exact integer-radius margin curve `Gamma_t(P)` and the markers used in Fig. 2.
+`paper_outputs/exp5_margin_curve.csv` contains the exact integer-radius margin curve `M_t(P)` and the markers used in Fig. 2.
 
 `paper_outputs/numerical_accuracy.csv` reports numerical separation/slack values alongside the tolerances used by the implementation.
 
