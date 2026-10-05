@@ -353,7 +353,10 @@ def make_graph(
             sizes, [[0.50, 0.08], [0.08, 0.50]], seed=seed
         )
         while not nx.is_connected(G):
-            comps = [sorted(c) for c in nx.connected_components(G)]
+            comps = sorted(
+                (sorted(c) for c in nx.connected_components(G)),
+                key=lambda c: c[0],
+            )
             G.add_edge(comps[0][0], comps[1][0])
         spring = nx.spring_layout(G, seed=seed)
         pos = {i: (float(spring[i][0]), float(spring[i][1])) for i in range(n)}
