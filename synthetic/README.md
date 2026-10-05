@@ -31,7 +31,7 @@ pip install -r requirements.txt
 From this folder:
 
 ```bash
-python mmsf_experiments.py \
+python synthetic_experiments.py \
   --profile paper \
   --experiments 2,5 \
   --output paper_outputs
@@ -63,7 +63,7 @@ The exact floating-point values are written to `exp5_summary.csv` rather than ha
 After the experiment command finishes:
 
 ```bash
-python make_paper_figures.py \
+python make_synthetic_experiment_figures.py \
   --input paper_outputs \
   --output figures
 ```
