@@ -1,0 +1,10 @@
+quantity,value
+minimum positive compression eigenvalue encountered,1.6019567240388047e-05
+minimum positive perturbed top-two objective gap,9.477299663718242e-05
+minimum eligible second-smallness slack,0.0013164192615594
+minimum finite certificate-crossing slack,0.0021094942608459
+PD_TOL,1e-11
+OPT_ATOL,1e-09
+OPT_RTOL,1e-09
+GAP_ZERO_TOL,1e-10
+INEQ_TOL,1e-12

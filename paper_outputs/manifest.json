@@ -1,0 +1,26 @@
+{
+  "suite": "JOTA reproducibility package: MMSF Experiments 2 and 5",
+  "profile": "paper",
+  "selected_experiments": [
+    2,
+    5
+  ],
+  "global_seed": 20260825,
+  "numerical_tolerances": {
+    "PD_TOL": 1e-11,
+    "OPT_ATOL": 1e-09,
+    "OPT_RTOL": 1e-09,
+    "GAP_ZERO_TOL": 1e-10,
+    "INEQ_TOL": 1e-12
+  },
+  "environment": {
+    "python": "3.10.18 | packaged by conda-forge | (main, Jun  4 2025, 14:46:00) [Clang 18.1.8 ]",
+    "platform": "macOS-14.0-arm64-arm-64bit",
+    "numpy": "1.26.4",
+    "scipy": "1.15.2",
+    "pandas": "2.3.0",
+    "networkx": "3.4.2"
+  },
+  "elapsed_seconds": 8.75936508178711,
+  "interpretation": "The experiments numerically illustrate the proved certificate and check implementation consistency; they are not statistical validation of the theorem."
+}
