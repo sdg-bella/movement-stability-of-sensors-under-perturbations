@@ -750,7 +750,7 @@ def write_accuracy_summary(out: Path) -> None:
 
 def write_manifest(out: Path, args, selected: List[int], elapsed: float) -> None:
     manifest = {
-        "suite": "JOTA reproducibility package: MMSF Experiments 2 and 5",
+        "suite": "reproducibility package: MMSF Experiments 2 and 5",
         "profile": args.profile,
         "selected_experiments": selected,
         "global_seed": GLOBAL_SEED,
@@ -789,7 +789,7 @@ def parse_experiments(text: str) -> List[int]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run JOTA paper Experiments 2 and 5 and export exact finite-instance data."
+        description="Run paper Experiments 2 and 5 and export exact finite-instance data."
     )
     parser.add_argument("--profile", choices=PROFILES, default="paper")
     parser.add_argument("--experiments", default="2,5")
@@ -802,7 +802,7 @@ def main() -> None:
     v = ValidationLog()
     profile = PROFILES[args.profile]
 
-    print(f"MMSF JOTA experiments | profile={args.profile} | experiments={selected}")
+    print(f"MMSF experiments | profile={args.profile} | experiments={selected}")
     print(f"Output: {out.resolve()}")
     start = time.time()
     timing_rows = []
@@ -849,7 +849,10 @@ def main() -> None:
             f"P_act={int(s5.P_act)}, P_cert={int(s5.P_cert)}, P_max={int(s5.P_max)}"
         )
 
-    print("\nNext: python make_paper_figures.py --input paper_outputs --output figures")
+    print(
+        "\nNext: python make_synthetic_experiment_figures.py "
+        "--input paper_outputs --output figures"
+    )
 
 
 if __name__ == "__main__":
