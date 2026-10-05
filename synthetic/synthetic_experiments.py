@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Reproducibility code for Experiments 2 and 5 in
-"Metric--Margin Stability of D-Optimal Subset Selection".
+"Movement Stability of D-Optimal Sensor Placement Under Projector Perturbations".
 
 Experiment 2: exact actual movement P_act versus exact certificate P_cert.
 Experiment 5: full objective landscape and exact distance-margin curve.
