@@ -450,8 +450,29 @@ def experiment_2(out: Path, profile: Dict, v: ValidationLog) -> None:
                             perturbed_pd.append(float(ev1[0]))
                     min_positive_compression_eig_perturbed = min(perturbed_pd)
 
+                    # Numerical safety quantities used in Section 8.1.
+                    new_opt_indices = [sets.index(S) for S in opts1]
+                    
+                    new_opt_kappas = []
+                    for S in opts1:
+                        C1 = symmetrize(P1[np.ix_(S, S)])
+                        new_opt_kappas.append(float(np.linalg.eigvalsh(C1)[0]))
+                    pd_slack_new_maximizers = float(min(new_opt_kappas))
+                    
+                    new_vals = vals1[new_opt_indices]
+                    new_family_spread = float(np.max(new_vals) - np.min(new_vals))
+                    
+                    ref_index = sets.index(Sstar)
+                    losses = vals0[ref_index] - vals0[new_opt_indices]
+                    losses = losses[np.isfinite(losses)]
+                    loss_bound_slack = (
+                        float(tq["B_t"] - np.max(losses))
+                        if len(losses) else np.nan
+                    )
+                    
                     P_cert = np.nan
                     crossing_slack = np.nan
+                    preceding_slack = np.nan
                     if tq["smallness_pass"]:
                         P_cert = exact_pcert_from_arrays(gaps, dists, tq["B_t"], P_max)
                         gamma_cert = exact_margin_from_arrays(gaps, dists, int(P_cert))
@@ -459,6 +480,11 @@ def experiment_2(out: Path, profile: Dict, v: ValidationLog) -> None:
                             float(gamma_cert - tq["B_t"])
                             if np.isfinite(gamma_cert) else np.inf
                         )
+                        if P_cert >= 1:
+                            gamma_before = exact_margin_from_arrays(
+                                gaps, dists, int(P_cert) - 1
+                            )
+                            preceding_slack = float(tq["B_t"] - gamma_before)
                         v.check(
                             exp, P_act <= P_cert,
                             "Computed certificate implication is satisfied",
@@ -495,6 +521,14 @@ def experiment_2(out: Path, profile: Dict, v: ValidationLog) -> None:
                         "min_positive_compression_eig_baseline": min_positive_compression_eig,
                         "min_positive_compression_eig_perturbed": min_positive_compression_eig_perturbed,
                         "perturbed_top_two_objective_gap": second_best_gap_t1,
+                        "eligible": bool(tq["smallness_pass"]),
+                        "pd_slack_reference": float(tq["kappa_star"]),
+                        "pd_slack_new_maximizers": pd_slack_new_maximizers,
+                        "crossing_slack": crossing_slack,
+                        "preceding_slack": preceding_slack,
+                        "new_family_size": int(len(opts1)),
+                        "new_family_spread": new_family_spread,
+                        "loss_bound_slack": loss_bound_slack,
                     })
 
     df = pd.DataFrame(rows)
