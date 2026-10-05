@@ -204,7 +204,7 @@ def exact_margin_from_arrays(gaps: np.ndarray, dists: np.ndarray, radius: int) -
 
 def margin_curve(gaps: np.ndarray, dists: np.ndarray, max_radius: int) -> pd.DataFrame:
     return pd.DataFrame([
-        {"P": P, "Gamma": exact_margin_from_arrays(gaps, dists, P)}
+        {"P": P, "M": exact_margin_from_arrays(gaps, dists, P)}
         for P in range(max_radius + 1)
     ])
 
@@ -212,10 +212,10 @@ def margin_curve(gaps: np.ndarray, dists: np.ndarray, max_radius: int) -> pd.Dat
 def exact_pcert_from_arrays(
     gaps: np.ndarray, dists: np.ndarray, B: float, max_radius: int
 ) -> int:
-    """Smallest integer P with Gamma_t(P) > B.
+    """Smallest integer P with M_t(P) > B.
 
     max_radius is P_max := max_S d_match(Sstar,S), not the graph diameter.
-    At P_max the far family is empty, so Gamma_t(P_max)=+inf.
+    At P_max the far family is empty, so M_t(P_max)=+inf.
     """
     for P in range(max_radius + 1):
         if exact_margin_from_arrays(gaps, dists, P) > B:
@@ -478,16 +478,16 @@ def experiment_2(out: Path, profile: Dict, v: ValidationLog) -> None:
                     preceding_slack = np.nan
                     if tq["smallness_pass"]:
                         P_cert = exact_pcert_from_arrays(gaps, dists, tq["B_t"], P_max)
-                        gamma_cert = exact_margin_from_arrays(gaps, dists, int(P_cert))
+                        M_cert = exact_margin_from_arrays(gaps, dists, int(P_cert))
                         crossing_slack = (
-                            float(gamma_cert - tq["B_t"])
-                            if np.isfinite(gamma_cert) else np.inf
+                            float(M_cert - tq["B_t"])
+                            if np.isfinite(M_cert) else np.inf
                         )
                         if P_cert >= 1:
-                            gamma_before = exact_margin_from_arrays(
+                            M_before = exact_margin_from_arrays(
                                 gaps, dists, int(P_cert) - 1
                             )
-                            preceding_slack = float(tq["B_t"] - gamma_before)
+                            preceding_slack = float(tq["B_t"] - M_before)
                         v.check(
                             exp, P_act <= P_cert,
                             "Computed certificate implication is satisfied",
@@ -679,7 +679,7 @@ def experiment_5(out: Path, profile: Dict, v: ValidationLog) -> None:
     perturbed_top_two_gap = (
         float(finite_vals1[0] - finite_vals1[1]) if finite_vals1.size >= 2 else np.nan
     )
-    gamma_cert = exact_margin_from_arrays(gaps, dists, R["P_cert"])
+    M_cert = exact_margin_from_arrays(gaps, dists, R["P_cert"])
     summary = {
         "seed": 911,
         "n": 12,
@@ -697,7 +697,7 @@ def experiment_5(out: Path, profile: Dict, v: ValidationLog) -> None:
         "P_cert": R["P_cert"],
         "P_max": R["P_max"],
         "certificate_crossing_slack": (
-            float(gamma_cert - tq["B_t"]) if np.isfinite(gamma_cert) else np.inf
+            float(M_cert - tq["B_t"]) if np.isfinite(M_cert) else np.inf
         ),
         "perturbed_top_two_objective_gap": perturbed_top_two_gap,
         **tq,
